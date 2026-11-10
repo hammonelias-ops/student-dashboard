@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Dashboard: Problem Definition</title>
+<style>
+  :root { --ink:#1d2330; --muted:#5b6475; --line:#e3e6ec; --accent:#3b5bdb; --bg:#fbfbfd; --card:#fff; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; }
+  main { max-width: 760px; margin: 0 auto; padding: 56px 24px 80px; }
+  .eyebrow { color:var(--accent); font-weight:600; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase; }
+  h1 { font-size: 2.2rem; line-height:1.2; margin:.3em 0 .4em; }
+  .lede { font-size:1.15rem; color:var(--muted); margin:0 0 2.2em; }
+  h2 { font-size:1.25rem; margin:2.2em 0 .6em; padding-top:1.2em; border-top:1px solid var(--line); }
+  .problem { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:8px; padding:18px 22px; font-size:1.08rem; }
+  ul { padding-left:1.2em; } li { margin:.35em 0; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap:12px; margin-top:.8em; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:14px 16px; }
+  .card b { display:block; margin-bottom:.2em; }
+  .card span { color:var(--muted); font-size:.95rem; }
+  footer { margin-top:3em; color:var(--muted); font-size:.9rem; border-top:1px solid var(--line); padding-top:1.2em; }
+  a { color:var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Project · Problem Definition</div>
+  <h1>Student Dashboard</h1>
+  <p class="lede">One place to see everything I need to stay on top of school and the rest of my life.</p>
+
+  <div class="problem">
+    <strong>The problem:</strong> As a student who also works a job, the information I need to stay on track is scattered across too many places: my school's gradebook, paper and digital assignments, my work schedule, and my own memory. There's no single place to see what's due, how I'm doing in each class, and how my time is split, so deadlines sneak up on me and school and work keep cutting into each other.
+  </div>
+
+  <h2>Why it matters</h2>
+  <ul>
+    <li><b>Missed or rushed work:</b> when due dates live in different places, it's easy to find out about an assignment too late.</li>
+    <li><b>No early warning on grades:</b> I usually only notice a grade slipping after it has already dropped.</li>
+    <li><b>School vs. work conflicts:</b> without seeing shifts and deadlines together, I can't plan around busy days.</li>
+    <li><b>Habits get ignored:</b> sleep and exercise affect how well I do in school, but I don't track them at all.</li>
+  </ul>
+
+  <h2>Why existing tools don't solve it</h2>
+  <ul>
+    <li>My school's gradebook was built in-house, so it doesn't connect to planners or apps like Canvas does.</li>
+    <li>Planner apps handle tasks, but not grades, work shifts, and habits together.</li>
+    <li>Many all-in-one tools cost money; this project needs to be completely free.</li>
+  </ul>
+
+  <h2>Goal</h2>
+  <p>Build a free web dashboard that answers three questions every day: <b>What do I need to do today? How am I doing in my classes? Am I taking care of myself?</b></p>
+
+  <h2>Planned features</h2>
+  <div class="grid">
+    <div class="card"><b>Today view</b><span>What's due, upcoming tests, and my work shift at a glance.</span></div>
+    <div class="card"><b>Tasks &amp; calendar</b><span>Assignments with due dates, a calendar, and homework file uploads.</span></div>
+    <div class="card"><b>Grade tracker</b><span>Grades checked automatically each night, with trends and a "what do I need on the final" calculator.</span></div>
+    <div class="card"><b>Reminders</b><span>Push notifications to my phone for things due soon.</span></div>
+    <div class="card"><b>Habits</b><span>Daily exercise goal, sleep log, and streaks.</span></div>
+    <div class="card"><b>Nightly review</b><span>A one-minute end-of-day check-in to set up tomorrow.</span></div>
+  </div>
+
+  <h2>Approach</h2>
+  <ul>
+    <li><b>Research first:</b> study open-source projects on GitHub and reuse proven tools instead of building everything from scratch.</li>
+    <li><b>Free tools only:</b> Next.js and shadcn/ui (interface), Supabase (database and uploads), FullCalendar or Schedule-X (calendar), ntfy (phone reminders), Obsidian (planning notes), and Vercel or GitHub Pages (hosting).</li>
+    <li><b>Build in stages:</b> start with tasks and the Today view, then add grades, reminders, and habits.</li>
+  </ul>
+
+  <h2>How I'll know it works</h2>
+  <ul>
+    <li>I check the dashboard daily instead of several separate places.</li>
+    <li>I miss fewer assignments and catch grade drops earlier.</li>
+    <li>Logging a habit or task takes only a few seconds.</li>
+  </ul>
+
+  <footer>Elias · Student Dashboard project · Last updated November 2026</footer>
+</main>
+</body>
+</html>
