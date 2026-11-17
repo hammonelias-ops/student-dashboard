@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { BottomTabs, Sidebar } from "@/components/app-nav";
+import { TimeZoneSync } from "@/components/time-zone-sync";
 
 // Signed-in app: nav + content. proxy.ts sends signed-out visitors to /login.
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -16,6 +17,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Suspense>
         <BottomTabs />
       </Suspense>
+      <TimeZoneSync />
     </>
   );
 }
