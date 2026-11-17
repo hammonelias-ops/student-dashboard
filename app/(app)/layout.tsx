@@ -9,7 +9,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Suspense>
         <Sidebar />
       </Suspense>
-      <main className="mx-auto w-full max-w-3xl px-4 pt-6 pb-24 md:ml-56 md:max-w-none md:px-10 md:pt-10 md:pb-10">
+      {/* No w-full: with md:ml-56 it would be 100% + 14rem wide and scroll sideways */}
+      <main className="mx-auto max-w-3xl px-4 pt-6 pb-24 md:ml-56 md:max-w-none md:px-10 md:pt-10 md:pb-10">
         {children}
       </main>
       <Suspense>
