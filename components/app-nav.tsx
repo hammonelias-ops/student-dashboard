@@ -8,9 +8,11 @@ import {
   Flame,
   GraduationCap,
   ListChecks,
+  LogOut,
   Sun,
 } from "lucide-react";
 
+import { signOut } from "@/app/auth/actions";
 import { cn } from "@/lib/utils";
 
 export const navItems = [
@@ -54,6 +56,15 @@ export function Sidebar() {
           );
         })}
       </nav>
+      <form action={signOut} className="mt-auto px-3 pb-4">
+        <button
+          type="submit"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+        >
+          <LogOut className="size-4" />
+          Sign out
+        </button>
+      </form>
     </aside>
   );
 }

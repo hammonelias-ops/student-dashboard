@@ -1,8 +1,6 @@
-import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { BottomTabs, Sidebar } from "@/components/app-nav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,17 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full">
-        <Suspense>
-          <Sidebar />
-        </Suspense>
-        <main className="mx-auto w-full max-w-3xl px-4 pt-6 pb-24 md:ml-56 md:max-w-none md:px-10 md:pt-10 md:pb-10">
-          {children}
-        </main>
-        <Suspense>
-          <BottomTabs />
-        </Suspense>
-      </body>
+      <body className="min-h-full">{children}</body>
     </html>
   );
 }
