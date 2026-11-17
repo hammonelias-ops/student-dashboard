@@ -72,6 +72,29 @@ export async function getHabitSummary(day: string) {
   return { total: habits.count ?? 0, done: logged.count ?? 0 };
 }
 
+// Daily goals with the days each was checked off since `sinceDay` (enough history for streaks)
+export async function getHabits(sinceDay: string) {
+  const { supabase } = await requireUser();
+  const [habits, logs] = await Promise.all([
+    supabase.from("habits").select("id, name").order("created_at"),
+    supabase.from("habit_log").select("habit_id, day").gte("day", sinceDay),
+  ]);
+  if (habits.error) throw new Error(habits.error.message);
+  if (logs.error) throw new Error(logs.error.message);
+  return habits.data.map((h) => ({
+    ...h,
+    days: new Set(logs.data.filter((l) => l.habit_id === h.id).map((l) => l.day as string)),
+  }));
+}
+
+// Hours slept per night since `sinceDay`: { "2026-11-17": 7.5, … }
+export async function getSleep(sinceDay: string) {
+  const { supabase } = await requireUser();
+  const { data, error } = await supabase.from("sleep_log").select("day, hours").gte("day", sinceDay);
+  if (error) throw new Error(error.message);
+  return Object.fromEntries(data.map((s) => [s.day as string, Number(s.hours)]));
+}
+
 // Private bucket → short-lived links for showing thumbnails and opening files
 export async function withSignedUrls(attachments: AttachmentRow[]) {
   if (attachments.length === 0) return [];
