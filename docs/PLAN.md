@@ -66,9 +66,18 @@ Keep `index.html` (the problem page) reachable, e.g. move it to `public/problem.
 - Later: heat map (react-activity-calendar)
 
 ### Stage 6: Calendar
-- FullCalendar month/week view of assignments, colored by class
+- **Full-year view** (FullCalendar multi-month year view): the whole school year, Aug 2026 – May 2027, on one screen. Tap a month to open it.
+- Month and week views for detail
+- Event types, each with its own color:
+  - **Break / day off** (shaded across every day it covers)
+  - **School date** (semester start/end, Friday School, orientation, graduation)
+  - **Event** (concerts, trips, debates; optional time and location)
+  - **Assignment / test** (colored by class)
+  - **Work shift**
+- **Add event** form: name, type, start date, end date (for multi-day breaks/trips), optional time, location, note
 - Drag an assignment to a new day = change due date
-- Work shifts as their own event type
+- Seed the school dates from **"School calendar 2026–27"** at the bottom of this file (`source = 'school'`)
+- Reminders and the Top 3 skip break days (no "due tomorrow" pings during winter break)
 
 ### Stage 7: Grades
 - Grade per class with trend over time (from the `grades` history table)
@@ -131,6 +140,10 @@ habit_log (user_id, habit_id → habits, day date, primary key (habit_id, day))
 sleep_log (user_id, day date, hours numeric, primary key (user_id, day))
 grades    (id, user_id, class_id → classes, percent numeric, checked_at timestamptz)
 daily_pick (user_id, day date, top3 jsonb, primary key (user_id, day))   -- Claude's Top 3 override
+events    (id, user_id, title, kind text check (kind in ('break','school','event','shift')),
+           start_date date, end_date date, start_time time, location text, note text,
+           source text default 'manual',   -- 'manual' | 'school'
+           created_at)
 ```
 
 ## Accounts Elias needs (all free)
@@ -150,3 +163,37 @@ GRADE_SYNC_SECRET=
 ```
 
 Add `.env.local` to `.gitignore` before the first commit.
+
+## School calendar 2026–27 (Centennial Academy)
+
+Read from the official school calendar and checked by Elias. Seed these into `events` with `source = 'school'`. Dates are inclusive.
+
+```json
+[
+  { "title": "School clean-up",             "kind": "school", "start": "2026-09-01", "end": "2026-09-04" },
+  { "title": "New student orientation",     "kind": "school", "start": "2026-09-08", "end": "2026-09-08" },
+  { "title": "Registration",                "kind": "school", "start": "2026-09-09", "end": "2026-09-09" },
+  { "title": "Week-in-a-day",               "kind": "school", "start": "2026-09-11", "end": "2026-09-11" },
+  { "title": "1st semester begins",         "kind": "school", "start": "2026-09-14", "end": "2026-09-14" },
+  { "title": "Friday School",               "kind": "school", "start": "2026-10-09", "end": "2026-10-09" },
+  { "title": "Friday School",               "kind": "school", "start": "2026-11-20", "end": "2026-11-20" },
+  { "title": "Thanksgiving Break",          "kind": "break",  "start": "2026-11-25", "end": "2026-12-01" },
+  { "title": "Choir",                       "kind": "event",  "start": "2026-11-30", "end": "2026-11-30" },
+  { "title": "Christmas Concert",           "kind": "event",  "start": "2026-12-10", "end": "2026-12-11" },
+  { "title": "Winter Break",                "kind": "break",  "start": "2026-12-21", "end": "2027-01-07" },
+  { "title": "1st semester ends",           "kind": "school", "start": "2027-01-14", "end": "2027-01-14" },
+  { "title": "2nd semester begins",         "kind": "school", "start": "2027-01-18", "end": "2027-01-18" },
+  { "title": "Friday School",               "kind": "school", "start": "2027-01-22", "end": "2027-01-22" },
+  { "title": "Friday School",               "kind": "school", "start": "2027-02-12", "end": "2027-02-12" },
+  { "title": "Presidents' Day",             "kind": "break",  "start": "2027-02-15", "end": "2027-02-15" },
+  { "title": "Spring Break",                "kind": "break",  "start": "2027-03-15", "end": "2027-03-18" },
+  { "title": "Youth Conference",            "kind": "event",  "start": "2027-03-24", "end": "2027-03-26" },
+  { "title": "School clean-up",             "kind": "school", "start": "2027-04-09", "end": "2027-04-09" },
+  { "title": "Spring Concert",              "kind": "event",  "start": "2027-04-11", "end": "2027-04-11" },
+  { "title": "Shakespeare Day",             "kind": "event",  "start": "2027-04-13", "end": "2027-04-13" },
+  { "title": "Possible CH trip",            "kind": "event",  "start": "2027-04-23", "end": "2027-04-25" },
+  { "title": "Debates",                     "kind": "event",  "start": "2027-04-30", "end": "2027-04-30" },
+  { "title": "2nd semester ends",           "kind": "school", "start": "2027-05-04", "end": "2027-05-04" },
+  { "title": "Graduation",                  "kind": "school", "start": "2027-05-07", "end": "2027-05-07" }
+]
+```
