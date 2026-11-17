@@ -37,6 +37,7 @@ export async function sendMagicLink(_prev: LoginState, formData: FormData): Prom
 
 export async function signOut() {
   const supabase = await createClient();
-  await supabase.auth.signOut();
+  // "local": only this browser. The default ("global") would also sign out your phone/laptop.
+  await supabase.auth.signOut({ scope: "local" });
   redirect("/login");
 }
