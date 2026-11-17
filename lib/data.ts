@@ -55,6 +55,23 @@ export async function getTask(id: string): Promise<TaskRow | null> {
   return data as TaskRow | null;
 }
 
+// Claude's Top 3 for a day (from the Stage 10 gradebook check), if there is one
+export async function getDailyPick(day: string): Promise<unknown> {
+  const { supabase } = await requireUser();
+  const { data } = await supabase.from("daily_pick").select("top3").eq("day", day).maybeSingle();
+  return data?.top3 ?? null;
+}
+
+// "2 of 3 today": how many daily goals exist and how many are checked off for `day`
+export async function getHabitSummary(day: string) {
+  const { supabase } = await requireUser();
+  const [habits, logged] = await Promise.all([
+    supabase.from("habits").select("id", { count: "exact", head: true }),
+    supabase.from("habit_log").select("habit_id", { count: "exact", head: true }).eq("day", day),
+  ]);
+  return { total: habits.count ?? 0, done: logged.count ?? 0 };
+}
+
 // Private bucket → short-lived links for showing thumbnails and opening files
 export async function withSignedUrls(attachments: AttachmentRow[]) {
   if (attachments.length === 0) return [];

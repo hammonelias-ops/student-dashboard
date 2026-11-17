@@ -13,10 +13,13 @@ export function TaskRowItem({
   task,
   cls,
   dueLabel,
+  reasons,
 }: {
   task: TaskRow;
   cls: ClassRow | undefined;
   dueLabel: string;
+  // Top 3 only: why it's in the Top 3 ("overdue", "BIO at 82%, goal 85%")
+  reasons?: string[];
 }) {
   const [, startTransition] = useTransition();
   const [done, setDone] = useOptimistic(task.done);
@@ -48,7 +51,7 @@ export function TaskRowItem({
           {cls && <ClassBadge code={cls.code} color={cls.color} className="text-foreground/80" />}
           <span>{dueLabel}</span>
           <span>{kindLabel(task.kind)}</span>
-          {task.missing && !done && (
+          {task.missing && !done && !reasons?.includes("missing in gradebook") && (
             <span className="rounded border border-amber-500/40 px-1.5 text-amber-300">Missing</span>
           )}
           {task.attachments.length > 0 && (
@@ -58,6 +61,15 @@ export function TaskRowItem({
             </span>
           )}
         </div>
+        {reasons && reasons.length > 0 && !done && (
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {reasons.map((r) => (
+              <span key={r} className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                {r}
+              </span>
+            ))}
+          </div>
+        )}
       </Link>
     </li>
   );

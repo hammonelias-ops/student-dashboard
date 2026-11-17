@@ -6,7 +6,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 // Used until the browser has told us its real time zone (see components/time-zone-sync.tsx)
-export const FALLBACK_TIME_ZONE = process.env.NEXT_PUBLIC_TIME_ZONE || "America/Denver";
+export const FALLBACK_TIME_ZONE = process.env.NEXT_PUBLIC_TIME_ZONE || "America/Phoenix";
 export const TIME_ZONE_COOKIE = "tz";
 
 // "No time = 11:59 PM"
