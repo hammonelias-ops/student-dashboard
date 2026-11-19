@@ -96,6 +96,17 @@ export async function getSleep(sinceDay: string) {
   return Object.fromEntries(data.map((s) => [s.day as string, Number(s.hours)]));
 }
 
+// Every grade check, oldest first (one row per class per check = the trend)
+export async function getGradeHistory() {
+  const { supabase } = await requireUser();
+  const { data, error } = await supabase
+    .from("grades")
+    .select("class_id, percent, checked_at")
+    .order("checked_at");
+  if (error) throw new Error(error.message);
+  return data.map((g) => ({ classId: g.class_id as string, percent: Number(g.percent), at: g.checked_at as string }));
+}
+
 const EVENT_COLUMNS = "id, title, kind, start_date, end_date, start_time, end_time, location, note, source";
 
 // Calendar events. A school year is a few dozen rows, so load them all.
