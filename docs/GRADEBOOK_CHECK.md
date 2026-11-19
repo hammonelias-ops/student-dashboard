@@ -1,6 +1,7 @@
 # Daily gradebook check (Stage 10)
 
-A **Claude scheduled task** runs this once a day (~3:30 PM Arizona) in the Claude desktop app.
+A **Claude scheduled task** (`daily-gradebook-check`) runs this on school days (Mon–Fri, ~3:30 PM Arizona)
+in the Claude desktop app. It only runs while the app is open; a missed run happens on next launch.
 It reads the school gradebook in Elias's browser, where he's already signed in, and sends what it
 found to the dashboard's `/api/sync` endpoint.
 
