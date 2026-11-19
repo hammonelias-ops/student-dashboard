@@ -88,9 +88,13 @@ function toCalendarEvents(tasks: CalendarTask[], events: EventRow[]): EventInput
 export default function CalendarInner({ tasks, events }: { tasks: CalendarTask[]; events: EventRow[] }) {
   const router = useRouter();
   const calendarRef = useRef<FullCalendar>(null);
-  // Browser-only component (see calendar-view.tsx), so window/localStorage are available here
-  const [initialView] = useState(pickInitialView);
   const [error, setError] = useState<string>();
+
+  // FullCalendar renders only an empty container on the server and builds the calendar in the
+  // browser, so the starting view can differ between the two without a hydration mismatch.
+  const [initialView] = useState<View>(() =>
+    typeof window === "undefined" ? "dayGridMonth" : pickInitialView()
+  );
 
   const calendarEvents = useMemo(() => toCalendarEvents(tasks, events), [tasks, events]);
 
