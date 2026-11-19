@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { ChevronRight, Flame, Plus } from "lucide-react";
 
-import { signOut } from "@/app/auth/actions";
 import { QuickAdd } from "@/components/quick-add";
 import { TaskRowItem } from "@/components/task-row";
 import { buttonVariants } from "@/components/ui/button";
@@ -23,12 +22,10 @@ export default function TodayPage() {
         <a href="/problem.html" className="underline underline-offset-4 hover:text-foreground">
           Project problem definition
         </a>
-        {/* Phone only: the desktop sidebar has its own sign-out button */}
-        <form action={signOut} className="md:hidden">
-          <button type="submit" className="underline underline-offset-4 hover:text-foreground">
-            Sign out
-          </button>
-        </form>
+        {/* Phone only: the desktop sidebar has its own Account link (password, sign out) */}
+        <Link href="/account" className="underline underline-offset-4 hover:text-foreground md:hidden">
+          Account
+        </Link>
       </div>
     </>
   );

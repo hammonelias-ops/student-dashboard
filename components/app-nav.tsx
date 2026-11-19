@@ -9,6 +9,7 @@ import {
   GraduationCap,
   ListChecks,
   LogOut,
+  UserRound,
   Sun,
 } from "lucide-react";
 
@@ -56,7 +57,18 @@ export function Sidebar() {
           );
         })}
       </nav>
-      <form action={signOut} className="mt-auto px-3 pb-4">
+      <Link
+        href="/account"
+        aria-current={pathname === "/account" ? "page" : undefined}
+        className={cn(
+          "mx-3 mt-auto flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+          pathname === "/account" && "bg-sidebar-accent text-sidebar-accent-foreground"
+        )}
+      >
+        <UserRound className="size-4" />
+        Account
+      </Link>
+      <form action={signOut} className="px-3 pb-4">
         <button
           type="submit"
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
