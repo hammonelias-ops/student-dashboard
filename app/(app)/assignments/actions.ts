@@ -90,9 +90,12 @@ export async function saveTask(_prev: FormState, form: FormData): Promise<FormSt
     missing: Boolean(form.get("missing")),
   };
 
+  // Where a new assignment came from: the form ("manual") or the mic in quick add ("voice")
+  const source = text(form, "source") === "voice" ? "voice" : "manual";
+
   const result = id
     ? await supabase.from("tasks").update(fields).eq("id", id).select("id").single()
-    : await supabase.from("tasks").insert(fields).select("id").single();
+    : await supabase.from("tasks").insert({ ...fields, source }).select("id").single();
 
   if (result.error) return { status: "error", message: result.error.message };
   return { status: "saved", id: result.data.id };

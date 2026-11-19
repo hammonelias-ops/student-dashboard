@@ -20,6 +20,7 @@ export type ClassRow = {
   id: string;
   name: string;
   code: string | null;
+  aliases: string[]; // other names for quick add / voice ("bio", "math")
   teacher: string | null;
   color: string | null;
   grade: number | null;

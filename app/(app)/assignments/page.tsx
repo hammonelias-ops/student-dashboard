@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 
 import { PageHeader } from "@/components/page-header";
+import { QuickAdd } from "@/components/quick-add";
 import { TaskRowItem } from "@/components/task-row";
 import { buttonVariants } from "@/components/ui/button";
 import { getClasses, getTasks } from "@/lib/data";
@@ -53,6 +54,8 @@ async function Assignments() {
   return (
     <div className="space-y-8">
       <ClassStrip classes={classes} />
+
+      <QuickAdd classes={classes} />
 
       <Link href="/assignments/new" className={buttonVariants({ size: "lg" })}>
         <Plus />

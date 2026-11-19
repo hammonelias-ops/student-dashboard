@@ -19,7 +19,7 @@ export async function requireUser() {
   return { supabase, userId };
 }
 
-const CLASS_COLUMNS = "id, name, code, teacher, color, grade, goal";
+const CLASS_COLUMNS = "id, name, code, aliases, teacher, color, grade, goal";
 const TASK_COLUMNS =
   "id, class_id, title, description, teacher, due_at, kind, priority, missing, done, attachments (id, path, name, mime)";
 

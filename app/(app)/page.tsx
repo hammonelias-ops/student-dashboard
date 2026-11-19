@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronRight, Flame, Plus } from "lucide-react";
 
 import { signOut } from "@/app/auth/actions";
+import { QuickAdd } from "@/components/quick-add";
 import { TaskRowItem } from "@/components/task-row";
 import { buttonVariants } from "@/components/ui/button";
 import { getClasses, getDailyPick, getEvents, getHabitSummary, getTasks } from "@/lib/data";
@@ -106,6 +107,8 @@ async function Today() {
           {open.length} open, {dueByToday.length} due today or overdue
         </p>
       </header>
+
+      <QuickAdd classes={classes} />
 
       {classes.length === 0 ? (
         <EmptyState
