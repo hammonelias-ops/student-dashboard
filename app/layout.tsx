@@ -16,6 +16,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Student Dashboard",
   description: "School and life in one place: tasks, calendar, grades, habits.",
+  // Installed on an iPhone home screen: full screen, app name under the icon
+  appleWebApp: { capable: true, title: "Dashboard", statusBarStyle: "black" },
+  icons: {
+    icon: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
 };
 
 export const viewport: Viewport = {

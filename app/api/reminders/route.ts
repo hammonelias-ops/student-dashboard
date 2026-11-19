@@ -64,7 +64,8 @@ export async function GET(request: NextRequest) {
 
   if (dry) return NextResponse.json({ sent: false, dry: true, title, body });
 
-  const appUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  // Tapping the notification opens the dashboard (the address this job was called on, e.g. on Vercel)
+  const appUrl = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
   const res = await fetch(`https://ntfy.sh/${encodeURIComponent(topic!)}`, {
     method: "POST",
     body,
