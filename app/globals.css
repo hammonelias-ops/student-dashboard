@@ -131,3 +131,77 @@
     @apply font-sans;
   }
 }
+
+/* FullCalendar (Calendar page): match the app's dark theme.
+   FullCalendar v6 injects its own CSS; these variables restyle it. */
+.student-calendar .fc {
+  --fc-border-color: var(--border);
+  --fc-page-bg-color: var(--background);
+  --fc-neutral-bg-color: color-mix(in oklch, var(--muted) 50%, transparent);
+  --fc-today-bg-color: color-mix(in oklch, var(--primary) 14%, transparent);
+  --fc-bg-event-opacity: 0.22;
+  --fc-button-bg-color: transparent;
+  --fc-button-border-color: var(--border);
+  --fc-button-text-color: var(--foreground);
+  --fc-button-hover-bg-color: var(--muted);
+  --fc-button-hover-border-color: var(--border);
+  --fc-button-active-bg-color: var(--muted);
+  --fc-button-active-border-color: var(--ring);
+  font-size: 0.8125rem;
+}
+.student-calendar .fc .fc-toolbar {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.student-calendar .fc .fc-toolbar-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+.student-calendar .fc .fc-button {
+  border-radius: var(--radius-md);
+  font-size: 0.8125rem;
+  padding: 0.3rem 0.65rem;
+  text-transform: none;
+  box-shadow: none !important;
+}
+.student-calendar .fc .fc-button-primary:not(:disabled).fc-button-active {
+  background: var(--muted);
+}
+.student-calendar .fc a {
+  color: inherit;
+}
+.student-calendar .fc .fc-col-header-cell-cushion,
+.student-calendar .fc .fc-daygrid-day-number {
+  color: var(--muted-foreground);
+}
+.student-calendar .fc .fc-multimonth {
+  border-radius: var(--radius-lg);
+}
+.student-calendar .fc .fc-multimonth-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.student-calendar .fc .fc-daygrid-event {
+  border-radius: 4px;
+  font-weight: 500;
+}
+.student-calendar .fc .fc-task-done {
+  opacity: 0.45;
+}
+.student-calendar .fc .fc-task {
+  cursor: grab;
+}
+.student-calendar .fc .fc-bg-event .fc-event-title {
+  display: none;
+}
+@media (max-width: 640px) {
+  .student-calendar .fc .fc-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .student-calendar .fc .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+  }
+}

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { connection } from "next/server";
 
 import { createClient } from "@/lib/supabase/server";
+import type { EventRow } from "@/lib/events";
 import type { AttachmentRow, ClassRow, TaskRow } from "@/lib/tasks";
 
 // Signed-in Supabase client + user id. Every page and action goes through this
@@ -93,6 +94,24 @@ export async function getSleep(sinceDay: string) {
   const { data, error } = await supabase.from("sleep_log").select("day, hours").gte("day", sinceDay);
   if (error) throw new Error(error.message);
   return Object.fromEntries(data.map((s) => [s.day as string, Number(s.hours)]));
+}
+
+const EVENT_COLUMNS = "id, title, kind, start_date, end_date, start_time, end_time, location, note, source";
+
+// Calendar events. A school year is a few dozen rows, so load them all.
+export async function getEvents(): Promise<EventRow[]> {
+  const { supabase } = await requireUser();
+  const { data, error } = await supabase.from("events").select(EVENT_COLUMNS).order("start_date");
+  // Before 0002_events.sql has been run the table doesn't exist yet: show an empty calendar
+  if (error?.code === "PGRST205" || error?.code === "42P01") return [];
+  if (error) throw new Error(error.message);
+  return data as EventRow[];
+}
+
+export async function getEvent(id: string): Promise<EventRow | null> {
+  const { supabase } = await requireUser();
+  const { data } = await supabase.from("events").select(EVENT_COLUMNS).eq("id", id).maybeSingle();
+  return data as EventRow | null;
 }
 
 // Private bucket → short-lived links for showing thumbnails and opening files

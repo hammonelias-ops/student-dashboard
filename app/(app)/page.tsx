@@ -5,7 +5,8 @@ import { ChevronRight, Flame, Plus } from "lucide-react";
 import { signOut } from "@/app/auth/actions";
 import { TaskRowItem } from "@/components/task-row";
 import { buttonVariants } from "@/components/ui/button";
-import { getClasses, getDailyPick, getHabitSummary, getTasks } from "@/lib/data";
+import { getClasses, getDailyPick, getEvents, getHabitSummary, getTasks } from "@/lib/data";
+import { breakOn } from "@/lib/events";
 import type { ClassRow, TaskRow } from "@/lib/tasks";
 import { dayjs, formatDue } from "@/lib/time";
 import { getTimeZone } from "@/lib/time-zone";
@@ -47,12 +48,16 @@ async function Today() {
   const endOfToday = local.endOf("day");
   const endOfTomorrow = local.add(1, "day").endOf("day");
 
-  const [classes, tasks, pickRaw, habits] = await Promise.all([
+  const [classes, tasks, pickRaw, habits, events] = await Promise.all([
     getClasses(),
     getTasks(),
     getDailyPick(todayKey),
     getHabitSummary(todayKey),
+    getEvents(),
   ]);
+  // On a break day (Thanksgiving, winter break…) the Top 3 steps aside
+  const onBreak = breakOn(todayKey, events);
+  const backOn = onBreak ? dayjs(onBreak.end_date).add(1, "day") : null;
   const classById = new Map(classes.map((c) => [c.id, c]));
   const open = tasks.filter((t) => !t.done);
   const dueByToday = open.filter((t) => !dayjs(t.due_at).isAfter(endOfToday));
@@ -116,6 +121,21 @@ async function Today() {
           href="/assignments/new"
           action="Add assignment"
         />
+      ) : onBreak ? (
+        <section className="space-y-3">
+          <div className="rounded-xl border px-4 py-3">
+            <p className="font-medium">{onBreak.title}</p>
+            <p className="text-sm text-muted-foreground">
+              No Top 3 today. School&apos;s back {backOn!.format("dddd, MMM D")}.
+            </p>
+          </div>
+          <details>
+            <summary className="cursor-pointer text-sm font-medium text-muted-foreground select-none hover:text-foreground">
+              Still on your list ({open.length})
+            </summary>
+            <TaskList tasks={ranked.map((s) => s.task)} {...listProps} />
+          </details>
+        </section>
       ) : (
         <section aria-labelledby="top3">
           <h2 id="top3" className="text-sm font-medium text-muted-foreground">
@@ -135,7 +155,7 @@ async function Today() {
         </section>
       )}
 
-      {restOfToday.length > 0 && (
+      {!onBreak && restOfToday.length > 0 && (
         <section aria-labelledby="today-rest">
           <h2 id="today-rest" className="text-sm font-medium text-muted-foreground">
             Also today and from before ({restOfToday.length})
@@ -144,7 +164,7 @@ async function Today() {
         </section>
       )}
 
-      {tomorrow.length > 0 && (
+      {!onBreak && tomorrow.length > 0 && (
         <details>
           <summary className="cursor-pointer text-sm font-medium text-muted-foreground select-none hover:text-foreground">
             Tomorrow ({tomorrow.length})
